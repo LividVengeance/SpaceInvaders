@@ -59,11 +59,11 @@ CPaddle::Process(float _fDeltaTick)
 
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
-		m_fX += 40000.0f * _fDeltaTick;
+		m_fX += 400.0f * _fDeltaTick;
 	}
 	else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{ 
-		m_fX -= 40000.0f * _fDeltaTick;
+		m_fX -= 400.0f * _fDeltaTick;
 	}
 	if (m_fX - fHalfPaddleW <= 0)
 	{

@@ -77,8 +77,8 @@ CLevel::Initialise(int _iWidth, int _iHeight)
     m_iWidth = _iWidth;
     m_iHeight = _iHeight;
 
-    const float fBallVelX = 200.0f;
-    const float fBallVelY = 75.0f;
+    const float fBallVelX = 0.0f;
+    const float fBallVelY = 200.0f;
 
 	m_pBackground = new CBackGround();
 	VALIDATE(m_pBackground->Initialise());
@@ -86,16 +86,16 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 	m_pBackground->SetX((float)m_iWidth / 2);
 	m_pBackground->SetY((float)m_iHeight / 2);
 
-	m_pBall = new CBall();
-    VALIDATE(m_pBall->Initialise(m_iWidth / 2.0f, m_iHeight / 2.0f, fBallVelX, fBallVelY));
-
     m_pPaddle = new CPaddle();
     VALIDATE(m_pPaddle->Initialise());
 
-    // Set the paddle's position to be centered on the x, 
+    // Set the paddle's position to be centered on the x,
     // and a little bit up from the bottom of the window.
-    m_pPaddle->SetX(_iWidth / 2.0f);
+    m_pPaddle->SetX(_iWidth / 3.0f);
     m_pPaddle->SetY(_iHeight - ( 1.5f * m_pPaddle->GetHeight()));
+
+	m_pBall = new CBall();
+	VALIDATE(m_pBall->Initialise(m_pPaddle->GetX(), m_pPaddle->GetY(), fBallVelX, fBallVelY));
 
     const int kiNumBricks = 36;
     const int kiStartX = 20;
