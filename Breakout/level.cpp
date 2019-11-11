@@ -94,8 +94,10 @@ CLevel::Initialise(int _iWidth, int _iHeight)
     m_pPaddle->SetX(_iWidth / 3.0f);
     m_pPaddle->SetY(_iHeight - ( 1.5f * m_pPaddle->GetHeight()));
 
+	
 	m_pBall = new CBall();
 	VALIDATE(m_pBall->Initialise(m_pPaddle->GetX(), m_pPaddle->GetY(), fBallVelX, fBallVelY));
+
 
     const int kiNumBricks = 36;
     const int kiStartX = 20;
@@ -152,13 +154,13 @@ CLevel::Process(float _fDeltaTick)
 	m_pBackground->Process(_fDeltaTick);
 	m_pBall->Process(_fDeltaTick);
 	m_pPaddle->Process(_fDeltaTick);
-	ProcessBallWallCollision(_fDeltaTick);
+	//ProcessBallWallCollision(_fDeltaTick);
 	//ProcessPaddleWallCollison();
     ProcessBallPaddleCollision();
     ProcessBallBrickCollision();
-
+	ProcessShoot();
     ProcessCheckForWin();
-	ProcessBallBounds();
+	//ProcessBallBounds();
 
     for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
     {
@@ -211,7 +213,22 @@ CLevel::ProcessBallWallCollision(float _fDeltaTick)
 }
 
 
+float CLevel::ProcessShoot()
+{
+	const float fBallVelX = 0.0f;
+	const float fBallVelY = 400.0f;
 
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	{
+		// Getting postion of paddle
+		float fBallX = m_pBall->GetX();
+		float fBallY = m_pBall->GetY() + 100;
+
+		m_pBall = new CBall();
+
+		VALIDATE(m_pBall->Initialise(m_pPaddle->GetX(), m_pPaddle->GetY(), fBallVelX, fBallVelY));
+	}
+}
 
 void
 CLevel::ProcessBallPaddleCollision()

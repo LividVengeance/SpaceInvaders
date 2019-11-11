@@ -62,7 +62,7 @@ CBall::Draw()
 void
 CBall::Process(float _fDeltaTick)
 {
-    m_fX += m_fVelocityX * _fDeltaTick;
+    //m_fX += m_fVelocityX * _fDeltaTick;
     m_fY += m_fVelocityY * _fDeltaTick;
 
     CEntity::Process(_fDeltaTick);
