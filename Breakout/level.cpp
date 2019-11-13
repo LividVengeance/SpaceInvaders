@@ -116,7 +116,7 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 
         iCurrentX += static_cast<int>(pBrick->GetWidth()) + kiGap;
 
-        if (iCurrentX > _iWidth)
+        if (iCurrentX > _iWidth - 100)
         {
             iCurrentX = kiStartX;
             iCurrentY += 20;
@@ -157,6 +157,7 @@ CLevel::Process(float _fDeltaTick)
 	//ProcessBallWallCollision(_fDeltaTick);
 	//ProcessPaddleWallCollison();
     ProcessBallPaddleCollision();
+	movingBricks();
     ProcessBallBrickCollision();
 	ProcessShoot();
     ProcessCheckForWin();
@@ -350,7 +351,37 @@ CLevel::DrawScore()
     TextOutA(hdc, kiX, kiY, m_strScore.c_str(), static_cast<int>(m_strScore.size()));
 }
 
-
+void CLevel::movingBricks()
+{
+	//Brick Movement Code
+	bool bMoveDown = true;
+	static float fMoveXVel = 0.1f;
+	//static float fAlienHeight = 20;
+	for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
+	{
+		m_vecBricks[i]->SetX(m_vecBricks[i]->GetX() + fMoveXVel);
+		//Move right
+		if ((m_vecBricks[i]->GetX() + m_vecBricks[i]->GetWidth() <= 60) && !(m_vecBricks[i]->IsHit()))
+		{
+			fMoveXVel *= -1.0f;
+			//Move down if at end of width of screen
+			for (int j = 0; j < m_vecBricks.size(); j++)
+			{
+				m_vecBricks[j]->SetY(m_vecBricks[j]->GetY() + 20);
+			}
+		}
+		//Move left
+		if ((m_vecBricks[i]->GetX() + m_vecBricks[i]->GetWidth() >= m_iWidth) && !(m_vecBricks[i]->IsHit()))
+		{
+			fMoveXVel *= -1.0f;
+			//Move down if at end of width of screen
+			for (int j = 0; j < m_vecBricks.size(); j++)
+			{
+				m_vecBricks[j]->SetY(m_vecBricks[j]->GetY() + 20);
+			}
+		}
+	}
+}
 
 void 
 CLevel::UpdateScoreText()

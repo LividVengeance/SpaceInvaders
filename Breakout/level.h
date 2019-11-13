@@ -53,6 +53,7 @@ public:
 protected:
     void ProcessBallWallCollision(float);
 	void ProcessPaddleWallCollison();
+	void movingBricks();
     void ProcessBallPaddleCollision();
     void ProcessBallBrickCollision();
 	float ProcessShoot();
