@@ -258,18 +258,22 @@ void CLevel::ProcessShoot()
 
 void CLevel::ProcessEnemyShooting()
 {
+	//const float fEnemyBallX = 0.0f;
+	//const float fEnemyBallY = 400.0f;
+
 	//m_pEnemyBall->SetX(10);
 	//m_pEnemyBall->SetY(10);
 	//m_vecBricks[1];
 
-	const float fEnemyBallX = 0.0f;
-	const float fEnemyBallY = 400.0f;
+	
 
-	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && (m_pEnemyBall->GetVisable() == false))
+	if (m_pEnemyBall->GetVisable() == false)
 	{
 		// Set ball to paddle location
-		m_pEnemyBall->SetX(m_pPaddle->GetX());
-		m_pEnemyBall->SetY(m_pPaddle->GetY());
+		//m_pEnemyBall->SetX(m_pPaddle->GetX());
+		//m_pEnemyBall->SetY(m_pPaddle->GetY());
+
+		
 
 		m_pEnemyBall->SetVisable(true);
 	}
