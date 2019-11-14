@@ -166,6 +166,8 @@ CLevel::Draw()
 		m_pEnemyBall->Draw();
 	}
     
+	DrawLives();
+
     DrawScore();
 	DrawFPS();
 }
@@ -189,6 +191,7 @@ CLevel::Process(float _fDeltaTick)
     ProcessCheckForWin();
 	UpdateLivesCount();
 	ProcessCheckForLoss();
+	DrawLives();
 	//ProcessBallBounds();
 
     for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
@@ -442,10 +445,21 @@ CLevel::DrawScore()
     HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC();
 
     const int kiX = 0;
-    const int kiY = m_iHeight - 14;
+	const int kiY = m_iHeight - 14;
 	SetBkMode(hdc, TRANSPARENT);
     
     TextOutA(hdc, kiX, kiY, m_strScore.c_str(), static_cast<int>(m_strScore.size()));
+}
+
+void CLevel::DrawLives()
+{
+	HDC hdc = CGame::GetInstance().GetBackBuffer()->GetBFDC();
+
+	const int kiX = m_iWidth - 60;
+	const int kiY = 0;
+	SetBkMode(hdc, TRANSPARENT);
+
+	TextOutA(hdc, kiX, kiY, m_strLives.c_str(), static_cast<int>(m_strLives.size()));
 }
 
 void CLevel::movingBricks()
@@ -490,7 +504,9 @@ CLevel::UpdateScoreText()
 
 void CLevel::UpdateLivesCount()
 {
-	
+	m_strLives = "Lives: ";
+
+	m_strLives += ToString(m_pPaddle->GetLives());
 }
 
 void 

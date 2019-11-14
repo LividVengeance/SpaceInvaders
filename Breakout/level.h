@@ -61,7 +61,7 @@ protected:
     void ProcessCheckForWin();
 	void ProcessEnemyShooting();
 	void ProcessEnemyBallPaddleCollision();
-
+	void DrawLives();
     void ProcessBallBounds();
 	void ProcessCheckForLoss();
 	void UpdateLivesCount();
@@ -92,6 +92,7 @@ protected:
     int m_iBricksRemaining;
 
     std::string m_strScore;
+	std::string m_strLives;
 
 private:
 
