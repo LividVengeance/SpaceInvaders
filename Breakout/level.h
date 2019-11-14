@@ -60,9 +60,11 @@ protected:
 	void ProcessShoot();
     void ProcessCheckForWin();
 	void ProcessEnemyShooting();
+	void ProcessEnemyBallPaddleCollision();
 
     void ProcessBallBounds();
-
+	void ProcessCheckForLoss();
+	void UpdateLivesCount();
     void UpdateScoreText();
     void DrawScore();
 	void DrawFPS();

@@ -39,6 +39,8 @@ public:
 
     virtual void Draw();
     virtual void Process(float _fDeltaTick);
+	void GotHit();
+	int GetLives();
 
 
 protected:
@@ -48,6 +50,7 @@ private:
     CPaddle& operator= (const CPaddle& _kr);
 
     // Member Variables
+	int m_iLives = 3;
 public:
 
 protected:

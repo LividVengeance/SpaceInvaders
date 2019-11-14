@@ -76,3 +76,13 @@ CPaddle::Process(float _fDeltaTick)
 	
 	CEntity::Process(_fDeltaTick);
 }
+
+void CPaddle::GotHit()
+{
+	m_iLives -= 1;
+}
+
+int CPaddle::GetLives()
+{
+	return (m_iLives);
+}

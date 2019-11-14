@@ -25,6 +25,8 @@
 #include "framecounter.h"
 #include "background.h"
 
+#include <time.h>  
+
 // This Include
 #include "Level.h"
 
@@ -171,6 +173,7 @@ CLevel::Draw()
 void
 CLevel::Process(float _fDeltaTick)
 {
+	
 	m_pBackground->Process(_fDeltaTick);
 	m_pBall->Process(_fDeltaTick);
 	m_pEnemyBall->Process(_fDeltaTick);
@@ -181,8 +184,11 @@ CLevel::Process(float _fDeltaTick)
 	ProcessEnemyShooting();
 	movingBricks();
     ProcessBallBrickCollision();
+	ProcessEnemyBallPaddleCollision();
 	ProcessShoot();
     ProcessCheckForWin();
+	UpdateLivesCount();
+	ProcessCheckForLoss();
 	//ProcessBallBounds();
 
     for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
@@ -190,7 +196,7 @@ CLevel::Process(float _fDeltaTick)
         m_vecBricks[i]->Process(_fDeltaTick);
     }
 	
-   
+	
     
 	m_fpsCounter->CountFramesPerSecond(_fDeltaTick);
 }
@@ -241,6 +247,7 @@ void CLevel::ProcessShoot()
 	const float fBallVelX = 0.0f;
 	const float fBallVelY = 400.0f;
 
+	// To stop the ball from drawing when left the screen
 	if (m_pBall->GetY() < 0)
 	{
 		m_pBall->SetVisable(false);
@@ -258,25 +265,56 @@ void CLevel::ProcessShoot()
 
 void CLevel::ProcessEnemyShooting()
 {
-	//const float fEnemyBallX = 0.0f;
-	//const float fEnemyBallY = 400.0f;
+	srand(time(NULL));
 
-	//m_pEnemyBall->SetX(10);
-	//m_pEnemyBall->SetY(10);
-	//m_vecBricks[1];
+	// To stop the enemy ball from drawing when left the screen
+	if (m_pEnemyBall->GetY() > m_iHeight)
+	{
+		m_pEnemyBall->SetVisable(false);
+	}
 
-	
-
+	// Randomly shooting
 	if (m_pEnemyBall->GetVisable() == false)
 	{
-		// Set ball to paddle location
-		//m_pEnemyBall->SetX(m_pPaddle->GetX());
-		//m_pEnemyBall->SetY(m_pPaddle->GetY());
-
 		
+		int randNum = rand() % 6;
 
-		m_pEnemyBall->SetVisable(true);
+		if (((!m_vecBricks[randNum]->GetX()) == NULL) and !(m_vecBricks[randNum]->IsHit()))
+		{
+			// Set ball to paddle location
+			m_pEnemyBall->SetX(m_vecBricks[randNum]->GetX());
+			m_pEnemyBall->SetY(m_vecBricks[randNum]->GetY());
+
+			m_pEnemyBall->SetVisable(true);
+		}
 	}
+	
+}
+
+void CLevel::ProcessEnemyBallPaddleCollision()
+{
+	float fBallR = m_pEnemyBall->GetRadius();
+
+	float fBallX = m_pEnemyBall->GetX();
+	float fBallY = m_pEnemyBall->GetY();
+
+	float fPaddleX = m_pPaddle->GetX();
+	float fPaddleY = m_pPaddle->GetY();
+
+	float fPaddleH = m_pPaddle->GetHeight();
+	float fPaddleW = m_pPaddle->GetWidth();
+
+	if ((fBallX + fBallR > fPaddleX - fPaddleW / 2) && //ball.right > paddle.left
+		(fBallX - fBallR < fPaddleX + fPaddleW / 2) && //ball.left < paddle.right
+		(fBallY + fBallR > fPaddleY - fPaddleH / 2) && //ball.bottom > paddle.top
+		(fBallY - fBallR < fPaddleY + fPaddleH / 2))  //ball.top < paddle.bottom
+	{
+		m_pEnemyBall->SetY((fPaddleY - fPaddleH / 2) - fBallR);  //Set the ball.bottom = paddle.top; to prevent the ball from going through the paddle!
+		m_pPaddle->GotHit();
+		m_pEnemyBall->SetVisable(false);
+	}
+
+	
 }
 
 void
@@ -350,7 +388,16 @@ CLevel::ProcessCheckForWin()
         }
     }
 
+
     CGame::GetInstance().GameOverWon();
+}
+
+void CLevel::ProcessCheckForLoss()
+{
+	if (m_pPaddle->GetLives() < 1)
+	{
+		CGame::GetInstance().GameOverLost();
+	}
 }
 
 void
@@ -436,11 +483,15 @@ void CLevel::movingBricks()
 void 
 CLevel::UpdateScoreText()
 {
-    m_strScore = "Bricks Remaining: ";
+    m_strScore = "Aliens Remaining: ";
 
     m_strScore += ToString(GetBricksRemaining());
 }
 
+void CLevel::UpdateLivesCount()
+{
+	
+}
 
 void 
 CLevel::DrawFPS()

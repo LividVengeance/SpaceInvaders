@@ -68,7 +68,7 @@ void
 CEnemyShoot::Process(float _fDeltaTick)
 {
 	//m_fX += m_fVelocityX * _fDeltaTick;
-	m_fY -= 600 * _fDeltaTick;
+	m_fY += 400 * _fDeltaTick;
 
 	CEntity::Process(_fDeltaTick);
 }
