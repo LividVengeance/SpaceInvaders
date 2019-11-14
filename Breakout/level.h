@@ -29,6 +29,7 @@
 
 // Prototypes
 class CBall;
+class CEnemyShoot;
 class CPaddle;
 class CBrick;
 class CFPSCounter;
@@ -78,6 +79,7 @@ public:
 protected:
 	CBackGround* m_pBackground;
     CBall* m_pBall;
+	CEnemyShoot* m_pEnemyBall;
     CPaddle* m_pPaddle;
     std::vector<CBrick*> m_vecBricks;
 	CFPSCounter* m_fpsCounter;

@@ -14,8 +14,8 @@
 
 #pragma once
 
-#if !defined(__BALL_H__)
-#define __BALL_H__
+#if !defined(__ENEMYBALL_H__)
+#define __ENEMYBALL_H__
 
 // Library Includes
 
@@ -71,4 +71,4 @@ private:
 };
 
 
-#endif    // __BALL_H__
+#endif    // __ENEMYBALL_H__

@@ -19,6 +19,7 @@
 #include "Paddle.h"
 #include "Brick.h"
 #include "Ball.h"
+#include "enemyShoot.h"
 #include "utils.h"
 #include "backbuffer.h"
 #include "framecounter.h"
@@ -39,6 +40,7 @@ CLevel::CLevel()
 : m_iBricksRemaining(0)
 , m_pPaddle(0)
 , m_pBall(0)
+, m_pEnemyBall(0)
 , m_iWidth(0)
 , m_iHeight(0)
 , m_fpsCounter(0)
@@ -63,6 +65,9 @@ CLevel::~CLevel()
     delete m_pBall;
     m_pBall = 0;
 
+	delete m_pEnemyBall;
+	m_pEnemyBall = 0;
+
 	delete m_fpsCounter;
 	m_fpsCounter = 0;
 
@@ -79,6 +84,9 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 
     const float fBallVelX = 0.0f;
     const float fBallVelY = 200.0f;
+
+	const float fEnemyVelX = 0.0f;
+	const float fEnemyVelY = 200.0f;
 
 	m_pBackground = new CBackGround();
 	VALIDATE(m_pBackground->Initialise());
@@ -97,6 +105,9 @@ CLevel::Initialise(int _iWidth, int _iHeight)
 	
 	m_pBall = new CBall();
 	VALIDATE(m_pBall->Initialise(m_pPaddle->GetX(), m_pPaddle->GetY(), fBallVelX, fBallVelY));
+
+	m_pEnemyBall = new CEnemyShoot();
+	VALIDATE(m_pEnemyBall->Initialise(m_pPaddle->GetX(), m_pPaddle->GetY(), fEnemyVelX, fEnemyVelY));
 
 
     const int kiNumBricks = 36;
@@ -147,6 +158,11 @@ CLevel::Draw()
 	{
 		m_pBall->Draw();
 	}
+
+	if (m_pEnemyBall->GetVisable() == true)
+	{
+		m_pEnemyBall->Draw();
+	}
     
     DrawScore();
 	DrawFPS();
@@ -157,10 +173,12 @@ CLevel::Process(float _fDeltaTick)
 {
 	m_pBackground->Process(_fDeltaTick);
 	m_pBall->Process(_fDeltaTick);
+	m_pEnemyBall->Process(_fDeltaTick);
 	m_pPaddle->Process(_fDeltaTick);
 	//ProcessBallWallCollision(_fDeltaTick);
 	//ProcessPaddleWallCollison();
     //ProcessBallPaddleCollision();
+	ProcessEnemyShooting();
 	movingBricks();
     ProcessBallBrickCollision();
 	ProcessShoot();
@@ -240,7 +258,21 @@ void CLevel::ProcessShoot()
 
 void CLevel::ProcessEnemyShooting()
 {
+	//m_pEnemyBall->SetX(10);
+	//m_pEnemyBall->SetY(10);
+	//m_vecBricks[1];
 
+	const float fEnemyBallX = 0.0f;
+	const float fEnemyBallY = 400.0f;
+
+	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && (m_pEnemyBall->GetVisable() == false))
+	{
+		// Set ball to paddle location
+		m_pEnemyBall->SetX(m_pPaddle->GetX());
+		m_pEnemyBall->SetY(m_pPaddle->GetY());
+
+		m_pEnemyBall->SetVisable(true);
+	}
 }
 
 void
