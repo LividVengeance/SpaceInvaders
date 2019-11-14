@@ -58,6 +58,7 @@ protected:
     void ProcessBallBrickCollision();
 	void ProcessShoot();
     void ProcessCheckForWin();
+	void ProcessEnemyShooting();
 
     void ProcessBallBounds();
 

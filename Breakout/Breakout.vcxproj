@@ -144,6 +144,7 @@
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="brick.cpp" />
     <ClCompile Include="clock.cpp" />
+    <ClCompile Include="enemyShoot.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="framecounter.cpp" />
     <ClCompile Include="game.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="brick.h" />
     <ClInclude Include="clock.h" />
+    <ClInclude Include="enemyShoot.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="framecounter.h" />
     <ClInclude Include="game.h" />

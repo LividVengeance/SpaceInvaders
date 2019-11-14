@@ -238,6 +238,11 @@ void CLevel::ProcessShoot()
 	}
 }
 
+void CLevel::ProcessEnemyShooting()
+{
+
+}
+
 void
 CLevel::ProcessBallPaddleCollision()
 {
