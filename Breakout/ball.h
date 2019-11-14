@@ -46,6 +46,9 @@ public:
     void SetVelocityX(float _fX);
     void SetVelocityY(float _fY);
 
+	void SetVisable(bool _bVisable);
+	bool GetVisable();
+
     float GetRadius() const;
 
 protected:
@@ -61,7 +64,7 @@ protected:
     float m_fVelocityX;
     float m_fVelocityY;
 
-
+	bool bCanBeHit;
 
 private:
 

@@ -49,6 +49,7 @@ CBall::Initialise(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocit
 
     m_fVelocityX = _fVelocityX;
     m_fVelocityY = _fVelocityY;
+	bCanBeHit = false;
 
     return (true);
 }
@@ -56,14 +57,18 @@ CBall::Initialise(float _fPosX, float _fPosY, float _fVelocityX, float _fVelocit
 void
 CBall::Draw()
 {
-    CEntity::Draw();
+	if (bCanBeHit)
+	{
+		CEntity::Draw();
+	}
+    
 }
 
 void
 CBall::Process(float _fDeltaTick)
 {
     //m_fX += m_fVelocityX * _fDeltaTick;
-    m_fY += m_fVelocityY * _fDeltaTick;
+    m_fY -= 600 * _fDeltaTick;
 
     CEntity::Process(_fDeltaTick);
 }
@@ -96,4 +101,14 @@ float
 CBall::GetRadius() const
 {
     return (GetWidth() / 2.0f);
+}
+
+void CBall::SetVisable(bool _bVisable)
+{
+	bCanBeHit = _bVisable;
+}
+
+bool CBall::GetVisable()
+{
+	return(bCanBeHit);
 }

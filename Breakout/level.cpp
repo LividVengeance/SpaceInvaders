@@ -142,8 +142,12 @@ CLevel::Draw()
     }
 
     m_pPaddle->Draw();
-    m_pBall->Draw();
 
+	if (m_pBall->GetVisable() == true)
+	{
+		m_pBall->Draw();
+	}
+    
     DrawScore();
 	DrawFPS();
 }
@@ -156,7 +160,7 @@ CLevel::Process(float _fDeltaTick)
 	m_pPaddle->Process(_fDeltaTick);
 	//ProcessBallWallCollision(_fDeltaTick);
 	//ProcessPaddleWallCollison();
-    ProcessBallPaddleCollision();
+    //ProcessBallPaddleCollision();
 	movingBricks();
     ProcessBallBrickCollision();
 	ProcessShoot();
@@ -214,20 +218,23 @@ CLevel::ProcessBallWallCollision(float _fDeltaTick)
 }
 
 
-float CLevel::ProcessShoot()
+void CLevel::ProcessShoot()
 {
 	const float fBallVelX = 0.0f;
 	const float fBallVelY = 400.0f;
 
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	if (m_pBall->GetY() < 0)
 	{
-		// Getting postion of paddle
-		float fBallX = m_pBall->GetX();
-		float fBallY = m_pBall->GetY() + 100;
+		m_pBall->SetVisable(false);
+	}
 
-		m_pBall = new CBall();
+	if ((GetAsyncKeyState(VK_UP) & 0x8000) && (m_pBall->GetVisable() == false))
+	{
+		// Set ball to paddle location
+		m_pBall->SetX(m_pPaddle->GetX());
+		m_pBall->SetY(m_pPaddle->GetY());
 
-		VALIDATE(m_pBall->Initialise(m_pPaddle->GetX(), m_pPaddle->GetY(), fBallVelX, fBallVelY));
+		m_pBall->SetVisable(true);
 	}
 }
 
@@ -260,7 +267,7 @@ CLevel::ProcessBallBrickCollision()
 {
     for (unsigned int i = 0; i < m_vecBricks.size(); ++i)
     {
-        if (!m_vecBricks[i]->IsHit())
+        if (!m_vecBricks[i]->IsHit() && (m_pBall->GetVisable() == true))
         {
             float fBallR = m_pBall->GetRadius();
 
@@ -284,9 +291,11 @@ CLevel::ProcessBallBrickCollision()
                 m_vecBricks[i]->SetHit(true);
 
                 SetBricksRemaining(GetBricksRemaining() - 1);
+				m_pBall->SetVisable(false);
             }
         }
     }
+	
 }
 
 void

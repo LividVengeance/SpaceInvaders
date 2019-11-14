@@ -56,7 +56,7 @@ protected:
 	void movingBricks();
     void ProcessBallPaddleCollision();
     void ProcessBallBrickCollision();
-	float ProcessShoot();
+	void ProcessShoot();
     void ProcessCheckForWin();
 
     void ProcessBallBounds();
